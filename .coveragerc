@@ -1,0 +1,17 @@
+[run]
+source = .
+branch = True
+omit =
+    */migrations/*
+    */tests/*
+    */test/*
+    manage.py
+    */wsgi.py
+    */asgi.py
+    */settings.py
+    venv/*
+    .venv/*
+    factory.py
+
+[report]
+show_missing = True

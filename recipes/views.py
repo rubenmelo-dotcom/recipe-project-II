@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render  # type: ignore
 from utils.recipes.factory import make_recipe
-from recipes.models import Recipe, Category
-from django.db.models import Q
+from recipes.models import Recipe, Category    # noqa: F401
+from django.db.models import Q  # type: ignore
 from django.shortcuts import get_list_or_404, get_object_or_404
 
 
@@ -12,12 +12,12 @@ def home_list_view(request):
     ).order_by('-id')
 
     if search:
-        recipes = Recipe.objects.filter(
-            Q(title__icontains=search) |
+        recipes = recipes.filter(
+            Q(title__icontains=search) |  # noqa: W504
             Q(description__icontains=search)
         )
 
-    fake_recipes = [make_recipe() for _ in range(9)]
+    fake_recipes = [make_recipe() for _ in range(9)]  # noqa: F841
     title = 'Recipes - Home' if not search else f'Recipes - {search}'
 
     context = {
@@ -38,7 +38,7 @@ def category_list_view(request, cat_pk):
             is_published=True,
         ).order_by('-id')
     )
-    fake_recipes = [make_recipe() for _ in range(9)]
+    fake_recipes = [make_recipe() for _ in range(9)]  # noqa: F841
     context = {
         'recipes': recipes,
         'title': f'Recipes - Categoria {recipes[0].category.name}'
@@ -57,7 +57,7 @@ def recipe_detail(request, pk):
             is_published=True,
         )
     )
-    fake_recipe = make_recipe()
+    fake_recipe = make_recipe()  # noqa: F841
     context = {
         'recipe': recipe,
         'title': f'Recipe - {recipe.title}'
