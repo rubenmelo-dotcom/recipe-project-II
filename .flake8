@@ -10,5 +10,4 @@ exclude =
     media,
     staticfiles
 ignore = 
-    E203,
-    W503
+    E501

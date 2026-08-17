@@ -1,7 +1,8 @@
 <div class="search-container">
     <div class="container">
-        <form class="search-form" action="">
-            <input class="search-input" name="search" type="search">
+        <form class="search-form" action="{% url "recipes:recipe_search" %}">
+            {% csrf_token %}
+            <input class="search-input" name="search" type="search" value="{{search}}">
             <button class="search-button" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>

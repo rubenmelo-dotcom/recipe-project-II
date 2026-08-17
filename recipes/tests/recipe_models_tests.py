@@ -1,4 +1,3 @@
-from unicodedata import category
 from recipes.tests.recipe_base_test import RecipeBaseTest
 from django.core.exceptions import ValidationError
 from recipes.models import Recipe
@@ -39,7 +38,7 @@ class RecipeModeltest(RecipeBaseTest):
 
     def test_category_fields_max_length(self):
         category = self._make_category(name='A' * 66)
- 
+
         with self.assertRaises(ValidationError):
             category.full_clean()
 
