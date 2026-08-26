@@ -78,3 +78,34 @@ class RecipeBaseTest(TestCase):
             author=self._make_author(**author_data)
         )
         return recipe
+
+    def _make_recipe_at_scale(
+            self,
+            qtd
+    ):
+        recipes = []
+        for i in range(qtd):
+            title = f'test_title{i}',
+            description = f'test_description{i}',
+            slug = f'test-slug-1{i}',
+            preparation_steps = f'test_preparation_steps{i}',
+
+            recipe = Recipe.objects.create(
+                title=title,
+                description=description,
+                slug=slug,
+                preparation_time=1,
+                servings=1,
+                preparation_steps=preparation_steps,
+                preparation_steps_is_html=False,
+                is_published=True,
+                cover=self._make_test_image(),
+                category=self._make_category(name='test_category'),
+                author=self._make_author(
+                    first_name=f'f_name{i}',
+                    last_name=f'l_name{i}',
+                    username=f'username{i}',
+                )
+            )
+            recipes.append(recipe)
+        return recipes

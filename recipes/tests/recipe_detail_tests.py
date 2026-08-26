@@ -54,3 +54,8 @@ class RecipeDetailTest(RecipeBaseTest):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_str_method_return_title(self):
+        recipe = self._make_recipe()
+
+        self.assertEqual(str(recipe), recipe.title)

@@ -1,11 +1,36 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    {% include "recipes/partials/_search_container.html" %}
+    {% include "global/partials/_search_container.html" %}
+    
+    <div class="center m-y">
+        <a href="{% url "authors:author_register" %}">
+            <h1>Registrar Author</h1>
+        </a>
+    </div>
+    
+    
+    {% include "global/partials/_messages.html" %}
 
+    {% if request.user.is_authenticated %}
+        <div class="center m-y" >
+            Logado com {{ request.user.first_name }}.
+            <form class="center m-y" action="{% url "authors:author_logout" %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ request.user.username }}" >
+                <button class="plaintext-button" type="submit">Sair</button>
+            </form> 
+        </div>
+    {% else %}
+        <div class="center m-y">
+            <a href="{% url "authors:author_login" %}">
+                <h1>Logar Author</h1>
+            </a>
+        </div>
+    {% endif %}
 
     <div class="main-content main-content-list container">
-        {% for recipe in recipes %}
+        {% for recipe in page_obj %}
             {% include "recipes/partials/_recipe-list.html" %}
         {% empty %}
         <div class="center m-y">
@@ -13,5 +38,9 @@
         </div>
         {% endfor %}
     </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% include "global/partials/_pagination.html" %}
+    {% endif %}
 
 {% endblock content %}
