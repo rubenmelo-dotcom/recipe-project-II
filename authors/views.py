@@ -15,7 +15,7 @@ def register_test(request):
         }
 
         if not form.is_valid():
-            messages.error(request, 'Corrija o cormulário')
+            messages.error(request, 'Corrija o formulário')
 
             return render(
                 request,
@@ -54,7 +54,7 @@ def login_test(request):
         }
 
         if not form.is_valid():
-            messages.error(request, 'Corrija o cormulário')
+            messages.error(request, 'Corrija o formulário!')
 
             return redirect('authors:author_login')
 

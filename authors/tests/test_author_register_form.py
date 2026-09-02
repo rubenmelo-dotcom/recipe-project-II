@@ -53,9 +53,9 @@ class AuthorRegisterFormintegrationTest(DjangoTestCase):
         return user
 
     @parameterized.expand([
-        ('username', 'Este campo é obrigatório'),
-        ('first_name', 'Este campo é obrigatório'),
-        ('last_name', 'Este campo é obrigatório'),
+        ('username', 'O campo Usuário não pode estar em branco'),
+        ('first_name', 'O campo Nome não pode estar em branco'),
+        ('last_name', 'O campo Sobrenome não pode estar em branco'),
         ('email', 'O campo Email não pode estar em branco'),
         ('password', 'Este campo é obrigatório'),
         ('password2', 'Este campo é obrigatório'),

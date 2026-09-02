@@ -12,6 +12,7 @@ omit =
     venv/*
     .venv/*
     factory.py
+    utils/browser.py
 
 [report]
 show_missing = True

@@ -53,15 +53,24 @@ class RegisterForm(ModelForm):
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
         }
+        error_messages = {
+            'first_name': {
+                'required': 'O campo Nome não pode estar em branco'
+            },
+            'last_name': {
+                'required': 'O campo Sobrenome não pode estar em branco'
+            },
+            'username': {
+                'required': 'O campo Usuário não pode estar em branco'
+            },
+            'usepasswordrname': {
+                'required': 'O campo Senha não pode estar em branco'
+            },
+        }
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name', '').strip()
 
-        if not first_name:
-            raise ValidationError(
-                'O campo Nome não pode estar em branco',
-                code='invalid',
-            )
         if len(first_name) < 3:
             raise ValidationError(
                 'O campo Nome deve conter pelo menos 3 caracteres',
@@ -73,14 +82,6 @@ class RegisterForm(ModelForm):
         last_name = (self.cleaned_data.get('last_name') or '').strip()
         first_name = (self.cleaned_data.get('first_name') or '').strip()
 
-        if not first_name or not last_name:
-            return last_name
-
-        if not last_name:
-            raise ValidationError(
-                'O campo Sobrenome não pode estar em branco',
-                code='invalid',
-            )
         if len(last_name) < 3:
             raise ValidationError(
                 'O campo Sobrenome deve conter pelo menos 3 caracteres',
@@ -110,11 +111,6 @@ class RegisterForm(ModelForm):
                 'O campo Email não pode estar em branco',
                 code='invalid',
             )
-        if len(email) < 4:
-            raise ValidationError(
-                'O campo Email deve conter pelo menos 3 caracteres',
-                code='invalid',
-            )
         queryset = User.objects.filter(
             email__iexact=email,
         )
@@ -132,11 +128,6 @@ class RegisterForm(ModelForm):
     def clean_username(self):
         username = self.cleaned_data.get('username', '').strip()
 
-        if not username:
-            raise ValidationError(
-                'O campo Username não pode estar em branco',
-                code='invalid',
-            )
         if len(username) < 3:
             raise ValidationError(
                 'O campo Username deve conter pelo menos 3 caracteres',

@@ -6,7 +6,7 @@ from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
-class RecipeBaseTest(TestCase):
+class RecipeMixin:
     def _make_test_image(self):
         file = io.BytesIO()
         image = Image.new('RGB', (100, 100), color='blue')
@@ -109,3 +109,8 @@ class RecipeBaseTest(TestCase):
             )
             recipes.append(recipe)
         return recipes
+
+
+class RecipeBaseTest(TestCase, RecipeMixin):
+    def setUp(self):
+        return super().setUp()
