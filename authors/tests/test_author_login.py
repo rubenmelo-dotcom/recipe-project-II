@@ -40,7 +40,7 @@ class TestsAuthorLogin(TestCase):
         )
 
         # self.assertNotEqual(authenticate(author), None)
-        self.assertIn('Usuário logado com sucesso!', response.content.decode('utf-8'))
+        self.assertIn('User successfully logged in!', response.content.decode('utf-8'))
         self.assertTrue(response.context['user'].is_authenticated)
 
     def test_login_author_failed(self):
@@ -55,7 +55,7 @@ class TestsAuthorLogin(TestCase):
             follow=True
         )
 
-        self.assertIn('Login ou senha inválidos', response.content.decode('utf-8'))
+        self.assertIn('Invalid login or password', response.content.decode('utf-8'))
         self.assertFalse(response.context['user'].is_authenticated)
 
     def test_login_author_with_invalid_form(self):
@@ -70,7 +70,7 @@ class TestsAuthorLogin(TestCase):
             follow=True
         )
 
-        self.assertIn('Corrija o formulário', response.content.decode('utf-8'))
+        self.assertIn('Correct the form!', response.content.decode('utf-8'))
         self.assertRaises(ValidationError)
 
     def test_logout_author_success(self):
@@ -85,7 +85,7 @@ class TestsAuthorLogin(TestCase):
             follow=True
         )
 
-        self.assertIn('Usuário logado com sucesso!', login_response.content.decode('utf-8'))
+        self.assertIn('User successfully logged in!', login_response.content.decode('utf-8'))
         self.assertEqual(int(self.client.session['_auth_user_id']), author.pk)
 
         logout_url = reverse('authors:author_logout')
@@ -109,7 +109,7 @@ class TestsAuthorLogin(TestCase):
             follow=True
         )
 
-        self.assertIn('Usuário logado com sucesso!', login_response.content.decode('utf-8'))
+        self.assertIn('User successfully logged in!', login_response.content.decode('utf-8'))
         self.assertEqual(int(self.client.session['_auth_user_id']), author.pk)
 
         logout_url = reverse('authors:author_logout')

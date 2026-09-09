@@ -8,10 +8,11 @@ class RecipeAdmin(admin.ModelAdmin):
     ordering = '-id',
     list_editable = 'is_published',
     list_per_page = 10
-    list_filter = 'title', 'category', 'author',
+    list_filter = 'category', 'author', 'is_published',
     prepopulated_fields = {
         'slug': ('title',)
     }
+    search_fields = 'title', 'description', 'preparation_steps',
 
 
 @admin.register(Category)

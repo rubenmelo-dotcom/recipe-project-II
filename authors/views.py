@@ -4,6 +4,9 @@ from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.contrib.auth.models import User
+from recipes.models import Recipe
 
 
 def register_test(request):
@@ -11,11 +14,12 @@ def register_test(request):
         form = RegisterForm(request.POST)
         context = {
             'form': form,
-            'title': 'Register'
+            'title': 'Register',
+            'action': reverse('authors:author_register'),
         }
 
         if not form.is_valid():
-            messages.error(request, 'Corrija o formulário')
+            messages.error(request, 'Correct the form!')
 
             return render(
                 request,
@@ -27,7 +31,7 @@ def register_test(request):
             user = form.save(commit=False)
             user.set_password(user.password)
             user.save()
-            messages.success(request, 'Usuário cadastrado com sucesso!')
+            messages.success(request, 'User successfully registered!')
 
             return redirect('authors:author_login')
 
@@ -36,7 +40,8 @@ def register_test(request):
 
     context = {
         'form': form,
-        'title': 'Register'
+        'title': 'Register',
+        'action': reverse('authors:author_register'),
     }
     return render(
         request,
@@ -50,11 +55,12 @@ def login_test(request):
         form = LoginForm(request.POST)
         context = {
             'form': form,
-            'title': 'Login'
+            'title': 'Login',
+            'action': reverse('authors:author_login'),
         }
 
         if not form.is_valid():
-            messages.error(request, 'Corrija o formulário!')
+            messages.error(request, 'Correct the form!')
 
             return redirect('authors:author_login')
 
@@ -67,10 +73,10 @@ def login_test(request):
             if authenticate_user is not None:
                 login(request, authenticate_user)
 
-                messages.success(request, 'Usuário logado com sucesso!')
-                return redirect('recipes:recipe_list')
+                messages.success(request, 'User successfully logged in!')
+                return redirect('authors:author_dashboard')
             else:
-                messages.error(request, 'Login ou senha inválidos')
+                messages.error(request, 'Invalid login or password')
 
                 return redirect('authors:author_login')
 
@@ -79,7 +85,8 @@ def login_test(request):
 
     context = {
         'form': form,
-        'title': 'Login'
+        'title': 'Login',
+        'action': reverse('authors:author_login'),
     }
     return render(
         request,
@@ -98,3 +105,36 @@ def logout_test(request):
 
     logout(request)
     return redirect('recipes:recipe_list')
+
+
+@login_required(login_url='authors:author_login')
+def dashboard_test(request):
+    author_pk = request.user.pk
+    author_recipes = Recipe.objects.filter(
+        author__pk=author_pk,
+        is_published=False,
+    ).order_by('-pk')
+
+    context = {
+        'recipes': author_recipes,
+        'title': f'Dashboard - {request.user.first_name}',
+    }
+
+    return render(
+        request,
+        'authors/pages/dashboard.html',
+        context
+    )
+
+
+# @login_required(login_url='authors:author_login')
+# def dashboard_test(request):
+#     context = {
+#         'title': f'Dashboard - {request.user.first_name}',
+#     }
+
+#     return render(
+#         request,
+#         'authors/pages/dashboard.html',
+#         context
+#     )

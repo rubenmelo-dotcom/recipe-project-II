@@ -53,10 +53,10 @@ class AuthorRegisterFormintegrationTest(DjangoTestCase):
         return user
 
     @parameterized.expand([
-        ('username', 'O campo Usuário não pode estar em branco'),
-        ('first_name', 'O campo Nome não pode estar em branco'),
-        ('last_name', 'O campo Sobrenome não pode estar em branco'),
-        ('email', 'O campo Email não pode estar em branco'),
+        ('username', 'The username field cannot be blank.'),
+        ('first_name', 'The first_name field cannot be blank.'),
+        ('last_name', 'The last_name field cannot be blank.'),
+        ('email', 'The email field cannot be blank.'),
         ('password', 'Este campo é obrigatório'),
         ('password2', 'Este campo é obrigatório'),
     ])
@@ -69,8 +69,8 @@ class AuthorRegisterFormintegrationTest(DjangoTestCase):
 
     @parameterized.expand([
         # ('username', 'Este campo é obrigatório'),
-        ('first_name', 'O campo Nome deve conter pelo menos 3 caracteres'),
-        ('last_name', 'O campo Sobrenome deve conter pelo menos 3 caracteres'),
+        ('first_name', 'The first_name field must contain at least 3 characters.'),
+        ('last_name', 'The last_name field must contain at least 3 characters.'),
         ('email', 'Informe um endereço de email válido.'),
         # ('password', 'Este campo é obrigatório'),
         # ('password2', 'Este campo é obrigatório'),
@@ -84,7 +84,7 @@ class AuthorRegisterFormintegrationTest(DjangoTestCase):
         self.assertRaises(ValidationError)
 
     def test_form_valid_save_correctly(self):
-        msg = 'Usuário cadastrado com sucesso!'
+        msg = 'User successfully registered!'
         url = reverse('authors:author_register')
         response = self.client.post(url, data=self.form_data, follow=True)
 
@@ -100,7 +100,7 @@ class AuthorRegisterFormintegrationTest(DjangoTestCase):
         self.assertIn(msg, response.content.decode('utf-8'))
 
     def test_trying_create_user_with_email_existing_raise_validation_error(self):
-        msg = 'Já existe um usuário cadastrado com este email.'
+        msg = 'There is already a registered user with this email.'
         url = reverse('authors:author_register')
         self.client.post(url, data=self.form_data, follow=True)
         response = self.client.post(url, data=self.form_data, follow=True)

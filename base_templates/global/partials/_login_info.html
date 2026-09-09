@@ -1,0 +1,16 @@
+    {% if request.user.is_authenticated %}
+        <div class="center m-y" >
+            Logado com {{ request.user.first_name }}.
+            <form class="center m-y" action="{% url "authors:author_logout" %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ request.user.username }}" >
+                <button class="plaintext-button" type="submit">Sair</button>
+            </form> 
+        </div>
+    {% else %}
+        <div class="center m-y">
+            <a href="{% url "authors:author_login" %}">
+                <h1>Logar Author</h1>
+            </a>
+        </div>
+    {% endif %}

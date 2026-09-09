@@ -28,7 +28,7 @@ class RecipeDetailTest(RecipeBaseTest):
         url = reverse('recipes:recipe_detail', kwargs={'pk': recipe.pk})
         response = self.client.get(url)
 
-        self.assertTemplateUsed(response, 'recipes/pages/recipe.html')
+        self.assertTemplateUsed(response, 'recipes/pages/recipe_detail.html')
 
     def test_recipe_detail_view_returns_status_code_404_with_recipe_non_existent(self):
         url = reverse('recipes:recipe_detail', kwargs={'pk': 1}, )

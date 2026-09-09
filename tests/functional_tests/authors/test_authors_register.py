@@ -6,8 +6,6 @@ import pytest
 from unittest.mock import patch
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 class AuthorRegisterTest(AuthorsBaseTest):
@@ -54,18 +52,18 @@ class AuthorRegisterTest(AuthorsBaseTest):
         WebDriverWait(self.browser, 10).until(
             EC.text_to_be_present_in_element(
                 (By.TAG_NAME, 'body'),
-                'Por favor corrija os erros no formulário!'
+                'Correct the form!'
             )
         )
 
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('Por favor corrija os erros no formulário!', body.text)
-        self.assertIn('O campo Nome não pode estar em branco', body.text)
-        self.assertIn('O campo Sobrenome não pode estar em branco', body.text)
-        self.assertIn('O campo Email não pode estar em branco', body.text)
-        self.assertIn('O campo Usuário não pode estar em branco', body.text)
+        self.assertIn('Correct the form!', body.text)
+        self.assertIn('The first_name field cannot be blank.', body.text)
+        self.assertIn('The last_name field cannot be blank.', body.text)
+        self.assertIn('The email field cannot be blank.', body.text)
+        self.assertIn('The username field cannot be blank.', body.text)
 
     def test_validation_min_length_first_name_field_form(self):
         self.browser.get(f'{self.live_server_url}/authors/register')
@@ -85,7 +83,7 @@ class AuthorRegisterTest(AuthorsBaseTest):
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('O campo Nome deve conter pelo menos 3 caracteres', body.text)
+        self.assertIn('The first_name field must contain at least 3 characters.', body.text)
 
     def test_validation_min_length_username_field_form(self):
         self.browser.get(f'{self.live_server_url}/authors/register')
@@ -103,14 +101,14 @@ class AuthorRegisterTest(AuthorsBaseTest):
         WebDriverWait(self.browser, 10).until(
             EC.text_to_be_present_in_element(
                 (By.TAG_NAME, 'body'),
-                'O campo Username deve conter pelo menos 3 caracteres'
+                'The username field must contain at least 3 characters.'
             )
         )
 
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('O campo Username deve conter pelo menos 3 caracteres', body.text)
+        self.assertIn('The username field must contain at least 3 characters.', body.text)
 
     def test_validation_min_length_email_field_form(self):
         self.browser.get(f'{self.live_server_url}/authors/register')
@@ -128,7 +126,7 @@ class AuthorRegisterTest(AuthorsBaseTest):
         WebDriverWait(self.browser, 10).until(
             EC.text_to_be_present_in_element(
                 (By.TAG_NAME, 'body'),
-                'Corrija o formulário'
+                'Correct the form!'
             )
         )
 
@@ -174,7 +172,7 @@ class AuthorRegisterTest(AuthorsBaseTest):
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('A confirmação de senha é diferente da senha', body.text)
+        self.assertIn('The password confirmation is different from the password.', body.text)
 
     def test_register_author_success(self):
         self.browser.get(f'{self.live_server_url}/authors/register')
@@ -193,7 +191,7 @@ class AuthorRegisterTest(AuthorsBaseTest):
         WebDriverWait(self.browser, 10).until(
             EC.text_to_be_present_in_element(
                 (By.TAG_NAME, 'body'),
-                'Usuário cadastrado com sucesso!'
+                'User successfully registered!'
             )
         )
 

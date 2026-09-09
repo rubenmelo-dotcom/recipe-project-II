@@ -5,6 +5,8 @@ from selenium.webdriver.common.keys import Keys
 import pytest
 from unittest.mock import patch
 from recipes.tests.recipe_base_test import RecipeMixin
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 @pytest.mark.functional_test
@@ -41,10 +43,17 @@ class AuthorLoginTest(AuthorsBaseTest, RecipeMixin):
 
         form.submit()
 
+        WebDriverWait(self.browser, 10).until(
+            EC.text_to_be_present_in_element(
+                (By.TAG_NAME, 'body'),
+                'Correct the form!'
+            )
+        )
+
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('Corrija o formulário!', body.text)
+        self.assertIn('Correct the form!', body.text)
 
     def test_trying_login_with_invalid_data(self):
         author = self._make_author(
@@ -67,7 +76,7 @@ class AuthorLoginTest(AuthorsBaseTest, RecipeMixin):
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('Login ou senha inválidos', body.text)
+        self.assertIn('Invalid login or password', body.text)
 
     def test_author_login_success(self):
         author = self._make_author(
@@ -90,5 +99,5 @@ class AuthorLoginTest(AuthorsBaseTest, RecipeMixin):
         body = self.browser.find_element(By.TAG_NAME, 'body')
 
         # sleep(20)
-        self.assertIn('Usuário logado com sucesso!', body.text)
+        self.assertIn('User successfully logged in!', body.text)
         self.assertIn(f'Logado com {author.first_name}.', body.text)

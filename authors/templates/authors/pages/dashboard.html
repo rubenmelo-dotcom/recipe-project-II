@@ -1,0 +1,31 @@
+{% extends 'global/base.html' %}
+
+
+{% block content %}
+  <div class="main-content center container"></div>
+
+  <div class="main-content center container">
+    <h2>Dashboard {{ request.user.first_name }}</h2>
+  </div>
+  
+  {% if messages %}
+      {% include "global/partials/_messages.html" %}
+  {% endif %}
+
+  {% include "global/partials/_login_info.html" %}
+
+  <div class="authors-dashboard-container center">
+    <h3>Suas Receitas</h3>
+  </div>
+
+  {% for recipe in recipes %}
+    <div class="dashboard-wrapper main-content main-content-list container ">
+      {% include "authors/partials/_recipe-list.html" %}
+    </div>
+    {% empty %}
+    <div class="dashboard-wrapper">
+      <p>Você não tem nenhuma receita! Crie uma</p>
+    </div>
+  {% endfor %}
+
+{% endblock content %}

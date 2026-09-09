@@ -55,16 +55,16 @@ class RegisterForm(ModelForm):
         }
         error_messages = {
             'first_name': {
-                'required': 'O campo Nome não pode estar em branco'
+                'required': 'The first_name field cannot be blank.'
             },
             'last_name': {
-                'required': 'O campo Sobrenome não pode estar em branco'
+                'required': 'The last_name field cannot be blank.'
             },
             'username': {
-                'required': 'O campo Usuário não pode estar em branco'
+                'required': 'The username field cannot be blank.'
             },
-            'usepasswordrname': {
-                'required': 'O campo Senha não pode estar em branco'
+            'password': {
+                'required': 'The password field cannot be blank.'
             },
         }
 
@@ -73,7 +73,7 @@ class RegisterForm(ModelForm):
 
         if len(first_name) < 3:
             raise ValidationError(
-                'O campo Nome deve conter pelo menos 3 caracteres',
+                'The first_name field must contain at least 3 characters.',
                 code='invalid',
             )
         return first_name
@@ -84,7 +84,7 @@ class RegisterForm(ModelForm):
 
         if len(last_name) < 3:
             raise ValidationError(
-                'O campo Sobrenome deve conter pelo menos 3 caracteres',
+                'The last_name field must contain at least 3 characters.',
                 code='invalid',
             )
 
@@ -98,7 +98,7 @@ class RegisterForm(ModelForm):
 
         if queryset.exists():
             raise ValidationError(
-                'Já existe um usuário cadastrado com este nome e sobrenome.',
+                'There is already a registered user with this first and last name.',
                 code='invalid',
             )
         return last_name
@@ -108,7 +108,7 @@ class RegisterForm(ModelForm):
 
         if not email:
             raise ValidationError(
-                'O campo Email não pode estar em branco',
+                'The email field cannot be blank.',
                 code='invalid',
             )
         queryset = User.objects.filter(
@@ -120,7 +120,7 @@ class RegisterForm(ModelForm):
 
         if queryset.exists():
             raise ValidationError(
-                'Já existe um usuário cadastrado com este email.',
+                'There is already a registered user with this email.',
                 code='invalid',
             )
         return email
@@ -130,7 +130,7 @@ class RegisterForm(ModelForm):
 
         if len(username) < 3:
             raise ValidationError(
-                'O campo Username deve conter pelo menos 3 caracteres',
+                'The username field must contain at least 3 characters.',
                 code='invalid',
             )
         return username
@@ -141,7 +141,7 @@ class RegisterForm(ModelForm):
 
         if password != password2:
             raise ValidationError(
-                'A confirmação de senha é diferente da senha',
+                'The password confirmation is different from the password.',
                 code='invalid',
             )
 

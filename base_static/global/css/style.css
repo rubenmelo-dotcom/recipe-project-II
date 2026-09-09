@@ -68,6 +68,10 @@ h6 {
     font-family: var(--font-headings);
 }
 
+img {
+    max-width: 210%;
+}
+
 .container {
     max-width: 144rem;
     margin: 0 auto;
@@ -340,6 +344,9 @@ h6 {
     text-align: center;
 }
 
+.left {
+    text-align: left;
+}
 .m-x {
     margin: 0 var(--spacing-gutter-medium);
 }
@@ -467,11 +474,20 @@ h6 {
   list-style-type: none;
 }
 
+/*form update*/
+.span-2 .span-2 form .span-2 .span-2 {
+    grid-column: span 2;
+    /* width: 100%;
+    height: 100%; */
+}
+
 .errorlist {
   color: var(--color-error-dark);
 }
 
-.form-content input {
+.form-content input,
+.form-content textarea,
+.form-content select {
   width: 100%;
   padding: 1rem;
   border-radius: 0.4rem;
@@ -500,3 +516,52 @@ h6 {
     padding-top: 0;
     margin-top: 0;
 }
+
+/* authors-dashboard */
+.recipe-dashboard {
+    background: var(--color-white);
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1);
+    transition: all 300ms ease-in-out;
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 40rem;
+}
+
+.dashboard-wrapper .recipe-dashboard .recipe-title-container{
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+
+/* Container Pai: Força o alinhamento em linha e permite quebra */
+.dashboard-wrapper {
+    display: flex !important;
+    flex-flow: row wrap !important; /* Mesma coisa que: flex-direction: row + flex-wrap: wrap */
+    justify-content: center;       /* Centraliza os cards na tela */
+    gap: 20px;                     /* Espaço entre as colunas e linhas */
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;            /* Centraliza a div na página */
+}
+
+/* Força os cards a entrarem em colunas */
+.dashboard-wrapper .recipe-title-container {
+    /* flex: grow shrink basis */
+    /* Define que cada card tenta ocupar 300px. Se houver espaço, eles dividem a linha. */
+    flex: 1 1 300px !important; 
+    
+    /* Trava uma largura máxima para o card não esticar até 100% sozinho */
+    max-width: 350px !important; 
+    
+    /* Zera a largura de 100% que estava empilhando os cards */
+    width: auto !important; 
+    margin: 0 !important;
+}
+
+/* Se o formulário original usa CSS Grid */
+.meu-include-uma-coluna form,
+.meu-include-uma-coluna .form-duas-colunas {
+  grid-template-columns: 1fr !important; /* Força apenas 1 coluna */
+}
+

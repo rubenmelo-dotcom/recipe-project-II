@@ -1,10 +1,16 @@
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import redirect, render
 from utils.recipes.factory import make_recipe
 from recipes.models import Recipe, Category    # noqa: F401
 from django.db.models import Q  # type: ignore
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.core.paginator import Paginator
 import os
+from recipes.forms import RecipeForm
+from django.contrib import messages
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 PER_PAGE = os.getenv('PER_PAGE', 9)
 
@@ -100,6 +106,112 @@ def recipe_detail_view(request, pk):
     }
     return render(
         request,
-        'recipes/pages/recipe.html',
+        'recipes/pages/recipe_detail.html',
         context
     )
+
+
+@login_required(login_url='authors:author_login')
+def recipe_update_view(request, pk):
+    recipe = get_object_or_404(
+        Recipe.objects.filter(
+            pk=pk,
+            is_published=False,
+            author=request.user,
+        )
+    )
+
+    form = RecipeForm(
+        data=request.POST or None,
+        files=request.FILES or None,
+        instance=recipe,
+        omit_field_prep_steps_is_html=True,
+        omit_field_is_published=True,
+    )
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save(commit=False)
+
+            recipe.author = request.user
+            recipe.preparation_steps_is_html = False
+            recipe.is_published = False
+            form.save()
+
+            messages.success(request, 'Recipe successfully updated!')
+
+            return redirect('authors:author_dashboard')
+
+    context = {
+        'recipe': recipe,
+        'form': form,
+        'title': f'Update - {recipe.title}',
+        'action': reverse('recipes:recipe_update', args=(recipe.pk,)),
+    }
+    return render(
+        request,
+        'recipes/pages/recipe_update.html',
+        context
+    )
+
+
+@login_required(login_url='authors:author_login')
+def recipe_create_view(request):
+    if request.method == "POST":
+        form = RecipeForm(
+            data=request.POST or None,
+            files=request.FILES or None,
+            omit_field_prep_steps_is_html=True,
+            omit_field_is_published=True,
+            omit_field_author=True,
+        )
+        if form.is_valid():
+            recipe = form.save(commit=False)
+
+            recipe.author = request.user
+            recipe.preparation_steps_is_html = False
+            recipe.is_published = False
+            form.save()
+
+            messages.success(request, 'Recipe successfully created!')
+
+            return redirect('authors:author_dashboard')
+    else:
+        form = RecipeForm(
+            omit_field_prep_steps_is_html=True,
+            omit_field_is_published=True,
+            omit_field_author=True,
+        )
+
+    context = {
+        'form': form,
+        'title': f'Create Recipe - {request.user.first_name}',
+        'action': reverse('recipes:recipe_create'),
+    }
+    return render(
+        request,
+        'recipes/pages/recipe_create.html',
+        context
+    )
+
+
+@login_required(login_url='authors:author_login')
+def recipe_delete_view(request):
+    if not request.method == 'POST':
+        raise Http404
+
+    pk = request.POST.get('pk')
+    recipe = get_object_or_404(
+        Recipe.objects.filter(
+            pk=pk,
+            is_published=False,
+            author=request.user,
+        )
+    )
+
+    if not recipe:
+        raise Http404
+
+    recipe.delete()
+    messages.success(request, 'Deleted successfully')
+    return redirect('authors:author_dashboard')
