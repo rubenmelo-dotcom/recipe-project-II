@@ -70,7 +70,7 @@ class TestsAuthorLogin(TestCase):
             follow=True
         )
 
-        self.assertIn('Correct the form!', response.content.decode('utf-8'))
+        self.assertIn('Invalid login or password', response.content.decode('utf-8'))
         self.assertRaises(ValidationError)
 
     def test_logout_author_success(self):

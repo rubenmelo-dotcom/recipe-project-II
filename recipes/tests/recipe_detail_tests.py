@@ -12,7 +12,7 @@ class RecipeDetailTest(RecipeBaseTest):
     def test_recipe_detail_view_is_correct(self):
         view = resolve(reverse('recipes:recipe_detail', kwargs={'pk': 1}))
 
-        self.assertIs(view.func, views.recipe_detail_view)
+        self.assertIs(view.func.view_class, views.RecipeDetailView)
 
     def test_recipe_detail_view_returns_status_code_200_ok(self):
         recipe = self._make_recipe()

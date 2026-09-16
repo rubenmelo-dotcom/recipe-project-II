@@ -1,11 +1,12 @@
 from django.urls import path
 from authors import views
+from django.contrib.auth.decorators import login_required
 
 app_name = 'authors'
 
 urlpatterns = [
-    path('register/', views.register_test, name='author_register'),
-    path('login/', views.login_test, name='author_login'),
-    path('logout/', views.logout_test, name='author_logout'),
-    path('dashboard/', views.dashboard_test, name='author_dashboard'),
+    path('register/', views.AuthorRegisterView.as_view(), name='author_register'),
+    path('login/', views.AuthorLoginView.as_view(), name='author_login'),
+    path('logout/', login_required(views.LogoutView.as_view()), name='author_logout'),
+    path('dashboard/', views.AuthorDashboardView.as_view(), name='author_dashboard'),
 ]

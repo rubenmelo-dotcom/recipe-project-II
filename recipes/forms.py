@@ -9,7 +9,17 @@ from utils.strings import is_positive_number
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-        fields = '__all__'
+        fields = (
+            'title',
+            'description',
+            'preparation_time',
+            'preparation_time_unit',
+            'servings',
+            'servings_unit',
+            'preparation_steps',
+            'cover',
+            'category',
+        )
         widgets = {
             'cover': forms.FileInput()
         }
@@ -17,16 +27,19 @@ class RecipeForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self._my_errors = defaultdict(list)
 
-        omit_field_prep_steps_is_html = kwargs.pop('omit_field_prep_steps_is_html', False)
-        omit_field_is_published = kwargs.pop('omit_field_is_published', False)
-        omit_field_author = kwargs.pop('omit_field_author', False)
+        # omit_field_prep_steps_is_html = kwargs.pop('omit_field_prep_steps_is_html', False)
+        # omit_field_is_published = kwargs.pop('omit_field_is_published', False)
+        # omit_field_author = kwargs.pop('omit_field_author', False)
+        # omit_field_slug = kwargs.pop('omit_field_slug', False)
         super().__init__(*args, **kwargs)
-        if omit_field_prep_steps_is_html:
-            del self.fields['preparation_steps_is_html']
-        if omit_field_is_published:
-            del self.fields['is_published']
-        if omit_field_author:
-            del self.fields['author']
+        # if omit_field_prep_steps_is_html:
+        #     del self.fields['preparation_steps_is_html']
+        # if omit_field_is_published:
+        #     del self.fields['is_published']
+        # if omit_field_author:
+        #     del self.fields['author']
+        # if omit_field_slug:
+        #     del self.fields['slug']
 
     def clean(self):
         super_clean = super().clean()

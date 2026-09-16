@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.text import slugify
 
 
 class TimeUnit(models.TextChoices):
@@ -39,7 +41,7 @@ class Recipe(models.Model):
 
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
-    slug = models.SlugField()
+    slug = models.SlugField(null=True, blank=True)
     preparation_time = models.IntegerField()
     preparation_time_unit = models.CharField(
         max_length=7,
@@ -68,3 +70,13 @@ class Recipe(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
+
+    def get_absolute_url(self):
+        return reverse("recipes:recipe_detail", kwargs={"pk": self.pk})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.title)}'
+            self.slug = slug
+
+        return super().save(*args, **kwargs)

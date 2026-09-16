@@ -51,8 +51,6 @@ def recipe_search_view(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(page_obj.paginator.num_pages)
-    print(recipes)
     title = f'Recipes - Search: {search}'
 
     context = {
@@ -164,6 +162,7 @@ def recipe_create_view(request):
             omit_field_prep_steps_is_html=True,
             omit_field_is_published=True,
             omit_field_author=True,
+            omit_field_slug=True,
         )
         if form.is_valid():
             recipe = form.save(commit=False)
@@ -181,6 +180,7 @@ def recipe_create_view(request):
             omit_field_prep_steps_is_html=True,
             omit_field_is_published=True,
             omit_field_author=True,
+            omit_field_slug=True,
         )
 
     context = {

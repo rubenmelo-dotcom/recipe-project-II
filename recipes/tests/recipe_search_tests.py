@@ -14,7 +14,7 @@ class RecipeSearchTest(RecipeBaseTest):
     def test_recipe_search_view_is_correct(self):
         view = resolve(reverse('recipes:recipe_search'))
 
-        self.assertIs(view.func, views.recipe_search_view)
+        self.assertIs(view.func.view_class, views.RecipeSearchListView)
 
     def test_recipe_search_view_returns_status_code_200_ok(self):
         url = reverse('recipes:recipe_search')
@@ -90,7 +90,7 @@ class RecipeSearchTest(RecipeBaseTest):
         self.assertContains(response_3, recipe_1.title)
         self.assertContains(response_3, recipe_2.title)
 
-    @patch('recipes.views.PER_PAGE', new=3)    
+    @patch('recipes.views.class_based_views.PER_PAGE', new=3)    
     def test_recipe_search_pagination_loads_correctly_qtd_pages(self):
         recipes = self._make_recipe_at_scale(4)
 
@@ -107,7 +107,7 @@ class RecipeSearchTest(RecipeBaseTest):
         self.assertEqual(len(paginator.get_page(2)), 1)
         self.assertEqual(paginator.num_pages, 2)
 
-    @patch('recipes.views.PER_PAGE', new=3)    
+    @patch('recipes.views.class_based_views.PER_PAGE', new=3)    
     def test_recipe_search_pagination_is_not_displayed_with_less_tha_two_pages_of_content(self):
         recipes = self._make_recipe_at_scale(2)
 

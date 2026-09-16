@@ -13,7 +13,7 @@ class RecipeCategoryTest(RecipeBaseTest):
     def test_recipe_category_view_is_correct(self):
         view = resolve(reverse('recipes:category_list', kwargs={'cat_pk': 1}))
 
-        self.assertIs(view.func, views.category_list_view)
+        self.assertIs(view.func.view_class, views.RecipeCategoryListView)
 
     def test_recipe_category_view_returns_status_code_200_ok(self):
         recipe = self._make_recipe()
@@ -72,7 +72,7 @@ class RecipeCategoryTest(RecipeBaseTest):
         self.assertNotContains(response, recipe_1.title)
         self.assertContains(response, recipe_2.title)
 
-    @patch('recipes.views.PER_PAGE', new=3)
+    @patch('recipes.views.class_based_views.PER_PAGE', new=3)
     def test_recipe_category_pagination_loads_correctly_qtd_pages(self):
         recipes = self._make_recipe_at_scale(4)
 
@@ -89,7 +89,7 @@ class RecipeCategoryTest(RecipeBaseTest):
         self.assertEqual(len(paginator.get_page(2)), 1)
         self.assertEqual(paginator.num_pages, 2)
 
-    @patch('recipes.views.PER_PAGE', new=3)
+    @patch('recipes.views.class_based_views.PER_PAGE', new=3)
     def test_recipe_category_pagination_is_not_displayed_with_less_tha_two_pages_of_content(self):
         recipes = self._make_recipe_at_scale(2)
 
