@@ -1,0 +1,52 @@
+{% comment %}
+    Menu principal. Sem JavaScript: no celular os links quebram em linha
+    abaixo do logo; a partir de sm ficam ao lado dele.
+{% endcomment %}
+<nav class="menu-container -mx-1 w-full sm:mx-0 sm:w-auto" aria-label="Menu principal">
+    <ul class="menu-nav flex flex-wrap items-center gap-1 text-sm font-medium">
+        <li>
+            <a href="{% url "recipes:recipe_list" %}"
+               class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent{% if request.resolver_match.url_name == 'recipe_list' %} text-fg{% endif %}"
+               {% if request.resolver_match.url_name == 'recipe_list' %}aria-current="page"{% endif %}>
+                <i class="fa-solid fa-house text-xs" aria-hidden="true"></i> Home
+            </a>
+        </li>
+        {% if user.is_authenticated %}
+            <li>
+                <a href="{% url "authors:author_dashboard" %}"
+                   class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent">
+                    <i class="fa-solid fa-table-columns text-xs" aria-hidden="true"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url "recipes:recipe_create" %}"
+                   class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-accent transition-colors hover:bg-accent/10 hover:text-accent-hover focus-visible:outline-2 focus-visible:outline-accent">
+                    <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i> New Recipe
+                </a>
+            </li>
+            <li>
+                <form action="{% url "authors:author_logout" %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ request.user.username }}">
+                    <button type="submit"
+                            class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-3 text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent">
+                        <i class="fa-solid fa-right-from-bracket text-xs" aria-hidden="true"></i> Sair
+                    </button>
+                </form>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url "authors:author_login" %}"
+                   class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent">
+                    Login
+                </a>
+            </li>
+            <li>
+                <a href="{% url "authors:author_register" %}"
+                   class="inline-flex min-h-11 items-center rounded-lg border border-accent/40 px-3 text-accent transition-colors hover:border-accent hover:bg-accent/10 focus-visible:outline-2 focus-visible:outline-accent">
+                    Register
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
