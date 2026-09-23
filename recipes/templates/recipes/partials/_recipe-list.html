@@ -1,62 +1,79 @@
-<div class="recipe">
-    <div class="recipe-cover recipe-cover-list">
-        <a href="{% url "recipes:recipe_detail" recipe.pk %}">
-            <img src="{{recipe.cover.url}}" alt="">
+{% comment %}
+    Card de receita usado na home, busca, categoria e tags.
+    A classe "recipe" é usada pelos testes funcionais (By.CLASS_NAME).
+{% endcomment %}
+<article class="recipe group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-lg shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-xl hover:shadow-black/30 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+    <div class="recipe-cover recipe-cover-list flex flex-1 flex-col">
+        <a href="{% url "recipes:recipe_detail" recipe.pk %}" class="block overflow-hidden bg-raised" tabindex="-1" aria-hidden="true">
+            {% if recipe.cover %}
+                <img class="aspect-[4/3] w-full object-cover opacity-90 saturate-[.85] transition duration-500 group-hover:scale-105 group-hover:opacity-100 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                     src="{{recipe.cover.url}}" alt="" loading="lazy" width="800" height="600">
+            {% else %}
+                <div class="grid aspect-[4/3] w-full place-items-center text-4xl text-fg-subtle">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+            {% endif %}
         </a>
-        <div class="recipe-title-container">
-            <a href="{% url "recipes:recipe_detail" recipe.pk %}">
-                <h2 class="recipe-title">{{recipe.title}}</h2>
-            </a>
-        </div>
-        <div class="recipe-author">
-            <span class="recipe-author-item">
-                <i class="fas fa-user"></i>
-                {% if recipe.author is not None %}
-                    {{recipe.author.first_name}} {{recipe.author.last_name}}
-                {% else %}
-                    Autor desconhecido
-                {% endif %}
-            </span>
-            <span class="recipe-author-item">
-                <i class="fas fa-calendar-alt"></i>
-                {{recipe.created_at|date:"d/m/Y"}}
-            </span>
-            <span class="recipe-author-item">
+
+        <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6">
+            <div class="recipe-title-container">
+                <a href="{% url "recipes:recipe_detail" recipe.pk %}" class="rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">
+                    <h2 class="recipe-title line-clamp-2 text-xl leading-snug font-bold text-fg transition-colors group-hover:text-accent">{{recipe.title}}</h2>
+                </a>
+            </div>
+
+            <div class="recipe-author flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-fg-subtle">
+                <span class="recipe-author-item inline-flex items-center gap-1.5">
+                    <i class="fas fa-user text-xs" aria-hidden="true"></i>
+                    {% if recipe.author is not None %}
+                        {{recipe.author.first_name}} {{recipe.author.last_name}}
+                    {% else %}
+                        Autor desconhecido
+                    {% endif %}
+                </span>
+                <span class="recipe-author-item inline-flex items-center gap-1.5">
+                    <i class="fas fa-calendar-alt text-xs" aria-hidden="true"></i>
+                    <time datetime="{{ recipe.created_at|date:'c' }}">{{recipe.created_at|date:"d/m/Y"}}</time>
+                </span>
                 {% if recipe.category is not None %}
-                    <a href="{% url "recipes:category_list" recipe.category.pk %}">
-                        <i class="fas fa-layer-group"></i>
-                        {{recipe.category.name}}
-                    </a>
+                    <span class="recipe-author-item">
+                        <a href="{% url "recipes:category_list" recipe.category.pk %}"
+                           class="relative z-10 inline-flex items-center gap-1.5 rounded-full bg-sage/10 px-2.5 py-0.5 text-xs font-medium text-sage ring-1 ring-sage/25 transition-colors hover:bg-sage/20 focus-visible:outline-2 focus-visible:outline-sage">
+                            <i class="fas fa-layer-group" aria-hidden="true"></i>
+                            {{recipe.category.name}}
+                        </a>
+                    </span>
                 {% endif %}
-            </span>
-        </div>
+            </div>
 
-        <div class="recipe-content">
-            <p>
-                {{recipe.description}}
-            </p>
-        </div> 
-        
-        <div class="recipe-meta-container">
-            <div class="recipe-meta recipe-preparation">
-                <h3 class="recipe-meta-title"><i class="fas fa-stopwatch"></i> Preparo</h3>
-                <div class="recipe-meta-text">
-                    {{recipe.preparation_time}} {{recipe.preparation_time_unit}}
+            <div class="recipe-content text-sm leading-relaxed text-fg-muted">
+                <p class="line-clamp-3">
+                    {{recipe.description}}
+                </p>
+            </div>
+
+            <div class="recipe-meta-container mt-auto grid grid-cols-2 divide-x divide-line rounded-xl bg-raised py-3 text-center">
+                <div class="recipe-meta recipe-preparation px-2">
+                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-stopwatch" aria-hidden="true"></i> Preparo</h3>
+                    <div class="recipe-meta-text mt-1 text-sm font-semibold text-fg">
+                        {{recipe.preparation_time}} {{recipe.preparation_time_unit}}
+                    </div>
+                </div>
+                <div class="recipe-meta recipe-servings px-2">
+                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-pizza-slice" aria-hidden="true"></i> Porções</h3>
+                    <div class="recipe-meta-text mt-1 text-sm font-semibold text-fg">
+                        {{recipe.servings}} {{recipe.servings_unit}}
+                    </div>
                 </div>
             </div>
-            <div class="recipe-meta recipe-servings">
-                <h3 class="recipe-meta-title"><i class="fas fa-pizza-slice"></i> Porções</h3>
-                <div class="recipe-meta-text">
-                    {{recipe.servings}} {{recipe.servings_unit}}
-                </div>
-            </div>
         </div>
 
-        <footer class="recipe-footer">
-            <a class="recipe-read-more button button-dark button-full-width" href="{% url "recipes:recipe_detail" recipe.pk %}">
-                <i class="fas fa-eye"></i>
+        <footer class="recipe-footer border-t border-line">
+            <a class="recipe-read-more flex min-h-12 items-center justify-center gap-2 text-sm font-semibold text-accent transition-colors hover:bg-accent/10 hover:text-accent-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+               href="{% url "recipes:recipe_detail" recipe.pk %}">
+                <i class="fas fa-eye" aria-hidden="true"></i>
                 <span>ver mais...</span>
             </a>
-        </footer>                
+        </footer>
     </div>
-</div>
+</article>

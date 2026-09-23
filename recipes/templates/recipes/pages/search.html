@@ -1,16 +1,19 @@
 {% extends "global/base.html" %}
 
 {% block content %}
+    {% include "recipes/partials/_page_heading.html" %}
+
     {% include "global/partials/_search_container.html" %}
 
     {% include "global/partials/_messages.html" %}
 
-    <div class="main-content main-content-list container">
+    <div class="main-content main-content-list container mx-auto mt-10 grid w-full max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
         {% for recipe in page_obj %}
             {% include "recipes/partials/_recipe-list.html" %}
         {% empty %}
-        <div class="center m-y">
-            <h1>Nenhum receita encontrada.</h1>
+        <div class="col-span-full rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-16 text-center">
+            <i class="fa-solid fa-magnifying-glass text-3xl text-fg-subtle" aria-hidden="true"></i>
+            <h1 class="mt-4 text-xl font-semibold text-fg">Nenhum receita encontrada.</h1>
         </div>
         {% endfor %}
     </div>

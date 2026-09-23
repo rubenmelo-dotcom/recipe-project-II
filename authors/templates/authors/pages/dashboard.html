@@ -4,28 +4,36 @@
 {% block content %}
   <div class="main-content center container"></div>
 
-  <div class="main-content center container">
-    <h2>Dashboard {{ request.user.first_name }}</h2>
+  <div class="main-content center container mx-auto w-full max-w-3xl px-4 pt-10 text-center sm:px-6 sm:pt-14">
+    <h2 class="text-3xl font-bold text-fg sm:text-4xl">Dashboard {{ request.user.first_name }}</h2>
   </div>
-  
+
   {% if messages %}
       {% include "global/partials/_messages.html" %}
   {% endif %}
 
   {% include "global/partials/_login_info.html" %}
 
-  <div class="authors-dashboard-container center">
-    <h3>Suas Receitas</h3>
-  </div>
+  <section class="mx-auto mt-8 w-full max-w-3xl px-4 sm:px-6" aria-labelledby="dashboard-recipes-title">
+    <div class="authors-dashboard-container flex flex-wrap items-center justify-between gap-3">
+      <h3 id="dashboard-recipes-title" class="text-xl font-semibold text-fg">Suas Receitas</h3>
+      <a href="{% url "recipes:recipe_create" %}"
+         class="inline-flex min-h-11 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i> New Recipe
+      </a>
+    </div>
 
-  {% for recipe in recipes %}
-    <div class="dashboard-wrapper main-content main-content-list container ">
-      {% include "authors/partials/_recipe-list.html" %}
-    </div>
-    {% empty %}
-    <div class="dashboard-wrapper">
-      <p>Você não tem nenhuma receita! Crie uma</p>
-    </div>
-  {% endfor %}
+    <ul class="dashboard-wrapper mt-5 flex flex-col gap-3">
+      {% for recipe in recipes %}
+        <li>
+          {% include "authors/partials/_recipe-list.html" %}
+        </li>
+      {% empty %}
+        <li class="rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-12 text-center text-fg-muted">
+          <p>Você não tem nenhuma receita! Crie uma</p>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
 
 {% endblock content %}

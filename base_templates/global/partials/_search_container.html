@@ -1,11 +1,12 @@
-<div class="search-container">
-    <div class="container">
-        <form class="search-form" action="{% url "recipes:recipe_search" %}">
-            {% csrf_token %}
-            <input placeholder="Digite sua busca"  class="search-input" name="search" type="search" value="{{search}}">
-            <button class="search-button" type="submit">
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-        </form>
-    </div>
+<div class="search-container mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6 lg:px-8">
+    <form class="search-form group relative mx-auto max-w-2xl" action="{% url "recipes:recipe_search" %}" role="search">
+        {% csrf_token %}
+        <label for="search-input" class="sr-only">Buscar receitas</label>
+        <i class="fa-solid fa-magnifying-glass pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-sm text-fg-subtle transition-colors group-focus-within:text-accent" aria-hidden="true"></i>
+        <input id="search-input" placeholder="Digite sua busca" class="search-input h-12 w-full rounded-full border border-line bg-surface pr-28 pl-11 text-fg shadow-sm shadow-black/20 transition placeholder:text-fg-subtle hover:border-line-strong focus:border-accent focus:ring-3 focus:ring-accent/25 focus:outline-none [&::-webkit-search-cancel-button]:hidden" name="search" type="search" value="{{search}}">
+        <button class="search-button absolute top-1.5 right-1.5 inline-flex h-9 cursor-pointer items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" type="submit">
+            <i class="fa fa-search sm:hidden" aria-hidden="true"></i>
+            <span class="sr-only sm:not-sr-only">Buscar</span>
+        </button>
+    </form>
 </div>

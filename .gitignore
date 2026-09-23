@@ -138,3 +138,7 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# Tailwind CSS standalone CLI (baixado localmente, não versionar)
+bin/tailwindcss
+node_modules/

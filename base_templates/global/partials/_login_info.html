@@ -1,16 +1,21 @@
     {% if request.user.is_authenticated %}
-        <div class="center m-y" >
-            Logado com {{ request.user.first_name }}.
-            <form class="center m-y" action="{% url "authors:author_logout" %}" method="POST">
+        <div class="login-info mx-auto mt-6 flex w-full max-w-2xl flex-wrap items-center justify-center gap-x-2 gap-y-1 px-4 text-center text-sm text-fg-muted sm:px-6">
+            <span class="inline-flex items-center gap-2">
+                <i class="fa-solid fa-circle-user text-sage" aria-hidden="true"></i>
+                Logado com {{ request.user.first_name }}.
+            </span>
+            <form class="inline-flex" action="{% url "authors:author_logout" %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="username" value="{{ request.user.username }}" >
-                <button class="plaintext-button" type="submit">Sair</button>
-            </form> 
+                <button class="plaintext-button inline-flex min-h-11 cursor-pointer items-center rounded px-1 font-medium text-accent underline-offset-4 transition-colors hover:text-accent-hover hover:underline focus-visible:outline-2 focus-visible:outline-accent" type="submit">Sair</button>
+            </form>
         </div>
     {% else %}
-        <div class="center m-y">
-            <a href="{% url "authors:author_login" %}">
-                <h1>Logar Author</h1>
+        <div class="login-info mx-auto mt-6 flex w-full max-w-2xl justify-center px-4 text-center sm:px-6">
+            <a class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium text-fg-muted transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
+               href="{% url "authors:author_login" %}">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+                <span>Logar Author</span>
             </a>
         </div>
     {% endif %}

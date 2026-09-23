@@ -1,5 +1,7 @@
 from django.contrib import admin
 from recipes.models import Recipe, Category
+from tag.models import Tag
+from django.contrib.contenttypes.admin import GenericStackedInline
 
 
 @admin.register(Recipe)
@@ -13,6 +15,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'slug': ('title',)
     }
     search_fields = 'title', 'description', 'preparation_steps',
+    autocomplete_fields = 'tags',
 
 
 @admin.register(Category)

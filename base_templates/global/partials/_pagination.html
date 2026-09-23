@@ -1,27 +1,31 @@
-<div class="pagination">
-    <span class="step-links">
+{% comment %}
+    Links de paginação. Os textos (first, previous, Page X of Y., next, last)
+    são verificados pelos testes; mantenha-os.
+{% endcomment %}
+<nav class="pagination mx-auto mt-12 flex w-full max-w-6xl justify-center px-4 sm:px-6 lg:px-8" aria-label="Paginação">
+    <span class="step-links inline-flex flex-wrap items-center justify-center gap-1 rounded-2xl border border-line bg-surface p-1.5 text-sm shadow-sm shadow-black/20">
         {% if page_obj.has_previous %}
             {% if search %}
-                <a href="?page=1&search={{search}}">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}&search={{search}}">previous</a>
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page=1&search={{search}}">&laquo; first</a>
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.previous_page_number }}&search={{search}}" rel="prev">previous</a>
             {% else %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page=1">&laquo; first</a>
+            <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.previous_page_number }}" rel="prev">previous</a>
             {% endif %}
         {% endif %}
 
-        <span class="current">
+        <span class="current inline-flex min-h-11 items-center rounded-xl bg-accent/15 px-4 font-semibold text-accent ring-1 ring-accent/30" aria-current="page">
             Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
         </span>
 
         {% if page_obj.has_next %}
             {% if search %}
-                <a href="?page={{ page_obj.next_page_number }}&search={{search}}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}&search={{search}}">last &raquo;</a>
-            {% else %}        
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.next_page_number }}&search={{search}}" rel="next">next</a>
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.paginator.num_pages }}&search={{search}}">last &raquo;</a>
+            {% else %}
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.next_page_number }}" rel="next">next</a>
+                <a class="inline-flex min-h-11 items-center rounded-xl px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg focus-visible:outline-2 focus-visible:outline-accent" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
             {% endif %}
     </span>
-</div>
+</nav>
