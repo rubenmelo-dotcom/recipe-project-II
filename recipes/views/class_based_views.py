@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView
 import os
 from django.core.paginator import Paginator
 from django.db.models import Q  # type: ignore
+from tag.models import Tag
 
 
 PER_PAGE = os.getenv('PER_PAGE', 9)
@@ -32,6 +33,15 @@ class RecipeListViewBase(ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(is_published=True)
         queryset = queryset.select_related('author', 'category')
+
+        queryset = queryset.defer(
+            'slug',
+            'preparation_steps',
+            'preparation_steps_is_html',
+            'updated_at',
+            'is_published',
+            'is_published',
+        )
 
         return queryset
 
@@ -153,6 +163,12 @@ class RecipeCreateView(LoginRequiredMixin, View):
 
             return redirect('authors:author_dashboard')
 
+        return render(
+            request,
+            self.template_name,
+            context={'form': form}
+        )
+
 
     # def get_context_data(self, **kwargs) -> dict[str, Any]:
     #     context = super().get_context_data(**kwargs)
@@ -255,5 +271,30 @@ class RecipeDetailView(DetailView):
         title = f'Recipe - {recipe.title}'
 
         context['title'] = title
+
+        return context
+
+
+class RecipeTagListView(RecipeListViewBase):
+    template_name = 'recipes/pages/search.html'
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(
+            tags__slug=self.kwargs.get('slug', '')
+        )
+        queryset = queryset.prefetch_related('tags')
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        title = Tag.objects.filter(
+            slug=self.kwargs.get('slug', '')
+        ).first()
+        if not title:
+            title = 'No recipes found'
+
+        context['title'] = f'Tag - {title}'
 
         return context

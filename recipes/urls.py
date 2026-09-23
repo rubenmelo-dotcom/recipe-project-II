@@ -11,4 +11,5 @@ urlpatterns = [
     path('recipes/<int:pk>/', views.RecipeDetailView.as_view(), name='recipe_detail'),
     path('recipes/update/<int:pk>/', views.RecipeUpdateView.as_view(), name='recipe_update'),
     path('recipes/category/<int:cat_pk>/', views.RecipeCategoryListView.as_view(), name='category_list'),
+    path('recipes/tags/<slug:slug>/', views.RecipeTagListView.as_view(), name='tags'),
 ]

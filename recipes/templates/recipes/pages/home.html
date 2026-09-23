@@ -1,36 +1,33 @@
 {% extends "global/base.html" %}
 
 {% block content %}
+    {% if request.resolver_match.url_name == 'recipe_list' %}
+        <section class="home-hero mx-auto w-full max-w-6xl px-4 pt-10 text-center sm:px-6 sm:pt-14 lg:px-8" aria-labelledby="home-hero-title">
+            <p class="text-xs font-semibold tracking-[0.2em] text-sage uppercase">Cozinha de todo dia</p>
+            <h2 id="home-hero-title" class="mt-3 text-3xl font-bold text-fg sm:text-4xl lg:text-5xl">
+                Receitas para inspirar a sua próxima refeição
+            </h2>
+            <p class="mx-auto mt-4 max-w-xl text-base text-pretty text-fg-muted sm:text-lg">
+                Pratos simples e caprichados, compartilhados pelos nossos autores.
+            </p>
+        </section>
+    {% else %}
+        {% include "recipes/partials/_page_heading.html" %}
+    {% endif %}
+
     {% include "global/partials/_search_container.html" %}
-    
-    <div class="center m-y">
-        <a href="{% url "authors:author_register" %}">
-            <h1>Registrar Author</h1>
-        </a>
-    </div>
-    <div class="center m-y">
-        <a href="{% url "authors:author_dashboard" %}">
-            <h1>Dashboard</h1>
-        </a>
-    </div>
-    {% if user.is_authenticated %}
-        <div class="center m-y">
-            <a href="{% url "recipes:recipe_create" %}">
-                <h1>Criação de Receitas</h1>
-            </a>
-        </div>
-    {% endif %}    
-    
+
     {% include "global/partials/_messages.html" %}
 
     {% include "global/partials/_login_info.html" %}
-    
-    <div class="main-content main-content-list container">
+
+    <div class="main-content main-content-list container mx-auto mt-10 grid w-full max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:gap-8 lg:px-8">
         {% for recipe in page_obj %}
             {% include "recipes/partials/_recipe-list.html" %}
         {% empty %}
-        <div class="center m-y">
-            <h1>Nenhum receita publicada. Volte mais tarde.</h1>
+        <div class="col-span-full rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-16 text-center">
+            <i class="fa-solid fa-bowl-food text-3xl text-fg-subtle" aria-hidden="true"></i>
+            <h1 class="mt-4 text-xl font-semibold text-fg">Nenhum receita publicada. Volte mais tarde.</h1>
         </div>
         {% endfor %}
     </div>

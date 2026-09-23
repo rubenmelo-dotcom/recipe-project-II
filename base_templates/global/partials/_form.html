@@ -1,39 +1,45 @@
-  <div class=" span-2 main-content container">
-    <form action="{{ action }}" method="POST" enctype="multipart/form-data" >
+  {% comment %}
+    A estrutura div > form é usada pelos testes funcionais
+    (XPath /html/body/main/div[3]/form); não envolva o <form> em outro elemento.
+  {% endcomment %}
+  <div class="span-2 main-content container mx-auto w-full max-w-2xl px-4 sm:px-6">
+    <form action="{{ action }}" method="POST" enctype="multipart/form-data"
+          class="rounded-2xl border border-line bg-surface p-5 shadow-lg shadow-black/20 sm:p-8">
       {% csrf_token %}
 
-      <div class=" span-2 form-content form-content-grid">
+      <div class="span-2 form-content form-content-grid grid grid-cols-1 gap-5 sm:grid-cols-2">
         {% for field in form %}
-          <div class=" span-2 form-group {{ field.field.widget.attrs.class }} ">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          <div class="form-group {{ field.field.widget.attrs.class }} {% if field.name == 'preparation_time' or field.name == 'preparation_time_unit' or field.name == 'servings' or field.name == 'servings_unit' or field.name == 'first_name' or field.name == 'last_name' %}sm:col-span-1{% else %}col-span-full{% endif %}{% if field.errors %} has-error{% endif %}">
+            <label for="{{ field.id_for_label }}" class="mb-1.5 block text-sm font-medium text-fg">{{ field.label }}</label>
             {{field}}
 
             {% if field.help_text %}
-              <p class="help-text">{{ field.help_text }}</p>
+              <p class="help-text mt-1.5 text-xs leading-relaxed text-fg-subtle">{{ field.help_text }}</p>
             {% endif %}
 
             {{ field.errors }}
           </div>
 
         {% if field.name == 'cover' and field.value.url %}
-          <img src="{{ field.value.url }}" alt="capa para {{ recipe.title }}">
+          <img class="col-span-full aspect-video w-full rounded-xl border border-line object-cover" src="{{ field.value.url }}" alt="capa para {{ recipe.title }}" loading="lazy">
         {% endif %}
         {% endfor %}
       </div>
 
       {% if form.errors %}
-      <div class="form-content form-content-grid">
+      <div class="form-content mt-6">
         <div class="form-group">
-          <div class="message message-error">
+          <div class="message message-error" role="alert">
             Por favor corrija os erros no formulário!
           </div>
         </div>
       </div>
       {% endif %}
 
-      <div class="form-content form-content-grid">
-        <div class="form-group">
-          <button type="submit">Send</button>
+      <div class="form-content mt-6 flex justify-end">
+        <div class="form-group w-full sm:w-auto">
+          <button type="submit"
+                  class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 font-semibold text-on-accent shadow-sm shadow-black/30 transition-colors hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:translate-y-px sm:w-auto">Send</button>
         </div>
       </div>
     </form>

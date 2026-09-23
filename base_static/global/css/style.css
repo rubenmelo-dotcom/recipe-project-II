@@ -565,3 +565,8 @@ img {
   grid-template-columns: 1fr !important; /* Força apenas 1 coluna */
 }
 
+.hidden-text {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+}

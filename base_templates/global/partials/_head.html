@@ -1,10 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#17191d">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/fontawesome.min.css"
         integrity="sha512-WAQldzapOKc+yIZB/g4npsWhF43dQ74uxwR6WkySVIKVGKaVNSuRw19CQeqN2OmYmg34g7TsZv3sh9nsQXYj3g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,8 +18,12 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'global/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Slab:wght@600;700&display=swap" rel="stylesheet">
+    {% comment %}
+        CSS gerado pelo Tailwind a partir de global/css/input.css.
+        Rebuild: bin/tailwindcss -i base_static/global/css/input.css -o base_static/global/css/tailwind.css --minify
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'global/css/tailwind.css' %}">
 
     <title>{{title}}</title>
 

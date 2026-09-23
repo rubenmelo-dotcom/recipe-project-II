@@ -106,6 +106,11 @@ class AuthorDashboardView(LoginRequiredMixin, ListView):
             is_published=False,
         ).order_by('-pk')
 
+        queryset = queryset.values(
+            'pk',
+            'title',
+        )
+
         return queryset
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
