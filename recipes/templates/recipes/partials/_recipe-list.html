@@ -1,3 +1,4 @@
+{% load i18n %}
 {% comment %}
     Card de receita usado na home, busca, categoria e tags.
     A classe "recipe" é usada pelos testes funcionais (By.CLASS_NAME).
@@ -24,12 +25,16 @@
 
             <div class="recipe-author flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-fg-subtle">
                 <span class="recipe-author-item inline-flex items-center gap-1.5">
-                    <i class="fas fa-user text-xs" aria-hidden="true"></i>
-                    {% if recipe.author is not None %}
-                        {{recipe.author.first_name}} {{recipe.author.last_name}}
-                    {% else %}
-                        Autor desconhecido
-                    {% endif %}
+                    {% if recipe.author.profile %}
+                    <a href="{% url "authors:author_profile" recipe.author.profile.pk %}">
+                        <i class="fas fa-user text-xs" aria-hidden="true"></i>
+                            {% if recipe.author is not None %}
+                                {{recipe.author.first_name}} {{recipe.author.last_name}}
+                            {% else %}
+                                Autor desconhecido
+                            {% endif %}
+                        </a>
+                    {% endif %}                
                 </span>
                 <span class="recipe-author-item inline-flex items-center gap-1.5">
                     <i class="fas fa-calendar-alt text-xs" aria-hidden="true"></i>
@@ -54,13 +59,13 @@
 
             <div class="recipe-meta-container mt-auto grid grid-cols-2 divide-x divide-line rounded-xl bg-raised py-3 text-center">
                 <div class="recipe-meta recipe-preparation px-2">
-                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-stopwatch" aria-hidden="true"></i> Preparo</h3>
+                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-stopwatch" aria-hidden="true"></i> {% translate 'Preparation' %} </h3>
                     <div class="recipe-meta-text mt-1 text-sm font-semibold text-fg">
                         {{recipe.preparation_time}} {{recipe.preparation_time_unit}}
                     </div>
                 </div>
                 <div class="recipe-meta recipe-servings px-2">
-                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-pizza-slice" aria-hidden="true"></i> Porções</h3>
+                    <h3 class="recipe-meta-title font-sans text-xs font-medium tracking-wide text-fg-subtle uppercase"><i class="fas fa-pizza-slice" aria-hidden="true"></i> {% translate 'Servings' %} </h3>
                     <div class="recipe-meta-text mt-1 text-sm font-semibold text-fg">
                         {{recipe.servings}} {{recipe.servings_unit}}
                     </div>
@@ -72,7 +77,7 @@
             <a class="recipe-read-more flex min-h-12 items-center justify-center gap-2 text-sm font-semibold text-accent transition-colors hover:bg-accent/10 hover:text-accent-hover focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
                href="{% url "recipes:recipe_detail" recipe.pk %}">
                 <i class="fas fa-eye" aria-hidden="true"></i>
-                <span>ver mais...</span>
+                <span>{% translate 'read more' %}...</span>
             </a>
         </footer>
     </div>

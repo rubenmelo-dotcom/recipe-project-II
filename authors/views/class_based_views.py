@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView
 from django.contrib.auth.models import User
-from authors.forms import RegisterForm, LoginForm
+from authors.forms import RegisterForm
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
@@ -9,6 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from typing import Any
 from recipes.models import Recipe
 from django.contrib.auth import logout
+from django.views.generic import TemplateView
+from django.shortcuts import get_object_or_404
+from authors.models import Profile
 
 
 class AuthorRegisterView(CreateView):
@@ -123,3 +126,22 @@ class AuthorDashboardView(LoginRequiredMixin, ListView):
         context["title"] = title
 
         return context
+
+
+class ProfileView(TemplateView):
+    template_name = 'authors/pages/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        profile_pk = context.get('pk')
+        profile = get_object_or_404(
+            Profile.objects.filter(
+                pk=profile_pk
+            ).select_related('author'), pk=profile_pk
+        )
+        return self.render_to_response(
+            {
+                **context,
+                'profile': profile,
+            }
+        )

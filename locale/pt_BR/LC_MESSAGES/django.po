@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-24 16:11-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: recipes/models.py:44 recipes/views/class_based_views.py:125
+msgid "Recipe"
+msgstr "Receita"
+
+#: recipes/models.py:45 recipes/views/class_based_views.py:97
+#, fuzzy
+#| msgid "Recipe"
+msgid "Recipes"
+msgstr "Receitas"
+
+#: recipes/models.py:47
+msgid "Title"
+msgstr "Título"
+
+#: recipes/models.py:48
+msgid "Description"
+msgstr "Descrição"
+
+#: recipes/models.py:49
+msgid "Slug"
+msgstr "Slug"
+
+#: recipes/templates/recipes/partials/_recipe-list.html:62
+msgid "Preparation"
+msgstr "Preparo"
+
+#: recipes/templates/recipes/partials/_recipe-list.html:68
+msgid "Servings"
+msgstr "Porções"
+
+#: recipes/templates/recipes/partials/_recipe-list.html:80
+msgid "read more"
+msgstr "ver mais"
+
+#: recipes/views/class_based_views.py:98
+msgid "Search"
+msgstr "Busca"
+
+#: recipes/views/class_based_views.py:124
+msgid "Category"
+msgstr "Categoria"

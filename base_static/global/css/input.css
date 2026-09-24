@@ -1,0 +1,281 @@
+/*
+ * Fonte do Tailwind CSS v4 (sintaxe CSS-first).
+ *
+ * Rebuild (a partir da raiz do projeto):
+ *   bin/tailwindcss -i base_static/global/css/input.css -o base_static/global/css/tailwind.css --minify
+ * Desenvolvimento:
+ *   bin/tailwindcss -i base_static/global/css/input.css -o base_static/global/css/tailwind.css --watch
+ *
+ * O arquivo gerado (tailwind.css) é o que os templates carregam em
+ * base_templates/global/partials/_head.html.
+ */
+
+/* source(none): desliga a detecção automática (que varreria venv/, htmlcov/,
+   coverage.xml etc.) e escaneia só os diretórios de templates abaixo.
+   Caminhos relativos a este arquivo. */
+@import "tailwindcss" source(none);
+
+@source "../../../base_templates";
+@source "../../../recipes/templates";
+@source "../../../authors/templates";
+
+/* ------------------------------------------------------------------ */
+/* Tokens do tema (tema escuro único)                                   */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Fontes (carregadas do Google Fonts em _head.html) */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Roboto Slab", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+
+  /* Superfícies, do mais escuro ao mais claro */
+  --color-ink: #101114;        /* header / footer */
+  --color-canvas: #17191d;     /* fundo da página (= meta theme-color) */
+  --color-surface: #1f2227;    /* cards, formulários, paginação */
+  --color-raised: #282c33;     /* áreas elevadas dentro de cards, hover de menu */
+
+  /* Bordas */
+  --color-line: #353a43;
+  --color-line-strong: #666e7b;  /* bordas de campos: >=3:1 no canvas */
+
+  /* Texto (contraste AA ou melhor sobre canvas/surface/raised) */
+  --color-fg: #e8eaed;         /* 14.6:1 no canvas */
+  --color-fg-muted: #b3b9c2;   /*  8.9:1 no canvas */
+  --color-fg-subtle: #959ca7;  /*  6.4:1 no canvas, 5.1:1 no raised */
+
+  /* Destaque (âmbar) */
+  --color-accent: #f0a44f;       /* 8.5:1 no canvas */
+  --color-accent-hover: #f6bb74;
+  --color-on-accent: #1b1206;    /* texto sobre bg-accent: 8.9:1 */
+
+  /* Cores de apoio */
+  --color-sage: #9fcaa5;       /* categorias, rótulos */
+  --color-danger: #f47c7e;     /* excluir, erros */
+  --color-success: #8fd19e;
+  --color-warning: #f2c46d;
+  --color-info: #8ab8f0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                 */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-canvas);
+  }
+
+  /* Títulos em Roboto Slab; use font-sans no elemento para voltar a Inter
+     (ex.: .recipe-meta-title). */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent) 35%, transparent);
+    color: var(--color-fg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Componentes: classes não-Tailwind geradas pelo Django                */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Campos renderizados por {{ field }} (sem classes próprias) */
+  .form-group input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  .form-group select,
+  .form-group textarea {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-canvas);
+    padding: 0.625rem 0.875rem;
+    color: var(--color-fg);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+
+  .form-group textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--color-fg-subtle);
+  }
+
+  .form-group input:not([type="hidden"]):hover,
+  .form-group select:hover,
+  .form-group textarea:hover {
+    border-color: var(--color-fg-subtle);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 25%, transparent);
+  }
+
+  .form-group input[type="file"] {
+    display: block;
+    width: 100%;
+    font-size: var(--text-sm);
+    color: var(--color-fg-muted);
+  }
+
+  .form-group input[type="file"]::file-selector-button {
+    margin-right: 0.75rem;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-raised);
+    padding: 0.5rem 0.875rem;
+    color: var(--color-fg);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .form-group input[type="file"]::file-selector-button:hover {
+    background-color: var(--color-line);
+  }
+
+  .form-group input[type="checkbox"],
+  .form-group input[type="radio"] {
+    accent-color: var(--color-accent);
+  }
+
+  .form-group.has-error input,
+  .form-group.has-error select,
+  .form-group.has-error textarea {
+    border-color: var(--color-danger);
+  }
+
+  /* Lista de erros do Django (<ul class="errorlist">) */
+  .errorlist {
+    margin-top: 0.375rem;
+    list-style: none;
+    padding: 0;
+    color: var(--color-danger);
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+  }
+
+  .errorlist li + li {
+    margin-top: 0.25rem;
+  }
+
+  /* Mensagens do framework (MESSAGE_TAGS em core/settings.py) */
+  .message {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-line);
+    border-left-width: 4px;
+    background-color: var(--color-surface);
+    padding: 0.75rem 1rem;
+    color: var(--color-fg);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+  .message-error {
+    border-color: color-mix(in oklab, var(--color-danger) 40%, transparent);
+    border-left-color: var(--color-danger);
+    background-color: color-mix(in oklab, var(--color-danger) 10%, var(--color-surface));
+  }
+
+  .message-success {
+    border-color: color-mix(in oklab, var(--color-success) 40%, transparent);
+    border-left-color: var(--color-success);
+    background-color: color-mix(in oklab, var(--color-success) 10%, var(--color-surface));
+  }
+
+  .message-warning,
+  .message-alert {
+    border-color: color-mix(in oklab, var(--color-warning) 40%, transparent);
+    border-left-color: var(--color-warning);
+    background-color: color-mix(in oklab, var(--color-warning) 10%, var(--color-surface));
+  }
+
+  .message-info {
+    border-color: color-mix(in oklab, var(--color-info) 40%, transparent);
+    border-left-color: var(--color-info);
+    background-color: color-mix(in oklab, var(--color-info) 10%, var(--color-surface));
+  }
+
+  .message-debug {
+    border-left-color: var(--color-fg-subtle);
+  }
+
+  /* Passos de preparo: HTML livre ou |linebreaks vindo do banco */
+  .recipe-steps {
+    color: var(--color-fg-muted);
+    line-height: 1.75;
+  }
+
+  .recipe-steps > * + * {
+    margin-top: 1rem;
+  }
+
+  .recipe-steps p:first-child {
+    margin-top: 1rem;
+  }
+
+  .recipe-steps h1,
+  .recipe-steps h2,
+  .recipe-steps h3,
+  .recipe-steps h4 {
+    margin-top: 1.75rem;
+    color: var(--color-fg);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .recipe-steps h1 { font-size: var(--text-2xl); }
+  .recipe-steps h2 { font-size: var(--text-xl); }
+  .recipe-steps h3,
+  .recipe-steps h4 { font-size: var(--text-lg); }
+
+  .recipe-steps ul,
+  .recipe-steps ol {
+    padding-left: 1.5rem;
+  }
+
+  .recipe-steps ul { list-style: disc; }
+  .recipe-steps ol { list-style: decimal; }
+
+  .recipe-steps li + li {
+    margin-top: 0.375rem;
+  }
+
+  .recipe-steps li::marker {
+    color: var(--color-accent);
+  }
+
+  .recipe-steps a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .recipe-steps a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .recipe-steps strong,
+  .recipe-steps b {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+
+  .recipe-steps img {
+    border-radius: var(--radius-xl);
+  }
+
+  /* Utilitária legada (antes em style.css) */
+  .hidden-text {
+    display: none;
+  }
+}

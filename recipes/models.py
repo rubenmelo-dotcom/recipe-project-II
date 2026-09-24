@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
+from django.utils.translation import gettext_lazy as _
+
 
 class TimeUnit(models.TextChoices):
     MINUTES = 'Minutes', 'Minutos'
@@ -39,12 +41,12 @@ class Recipe(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Recipe'
-        verbose_name_plural = 'Recipes'
+        verbose_name = _('Recipe')
+        verbose_name_plural = _('Recipes')
 
-    title = models.CharField(max_length=65)
-    description = models.CharField(max_length=165)
-    slug = models.SlugField(null=True, blank=True)
+    title = models.CharField(max_length=65, verbose_name=_('Title'))
+    description = models.CharField(max_length=165, verbose_name=_('Description'))
+    slug = models.SlugField(null=True, blank=True, verbose_name=_('Slug'))
     preparation_time = models.IntegerField()
     preparation_time_unit = models.CharField(
         max_length=7,
@@ -73,7 +75,7 @@ class Recipe(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True, default='')
 
     def get_absolute_url(self):
         return reverse("recipes:recipe_detail", kwargs={"pk": self.pk})

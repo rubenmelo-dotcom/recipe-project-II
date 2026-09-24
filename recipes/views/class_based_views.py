@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect, get_list_or_404, get_object_or_40
 from django.urls import reverse, reverse_lazy
 from django.http.response import Http404
 from recipes.models import Recipe
-from typing import Any
+from django.utils import translation
+from django.utils.translation import gettext as _
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
@@ -33,6 +34,7 @@ class RecipeListViewBase(ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(is_published=True)
         queryset = queryset.select_related('author', 'category')
+        queryset = queryset.prefetch_related('tags', 'author__profile')
 
         queryset = queryset.defer(
             'slug',
@@ -53,8 +55,11 @@ class RecipeListViewBase(ListView):
         page_number = self.request.GET.get('page', '')
         page_obj = paginator.get_page(page_number)
 
+        html_language = translation.get_language()
+
         context['recipes'] = recipes
         context['page_obj'] = page_obj
+        context['html_language'] = html_language
 
         return context
 
@@ -89,9 +94,11 @@ class RecipeSearchListView(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data( *args, **kwargs)
+        recipes_translation = _('Recipes')
+        search_translation = _('Search')
 
         search = self.request.GET.get('search').strip()
-        title = f'Recipes - Search: {search}'
+        title = f'{recipes_translation} - {search_translation}: {search}'
 
         context['search'] = search
         context['title'] = title
@@ -114,9 +121,11 @@ class RecipeCategoryListView(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        category_translation = _('Category')
+        recipe_translation = _('Recipe')
 
         recipes = self.get_queryset()
-        title = f'Recipes - Categoria {recipes[0].category.name}'
+        title = f'{recipe_translation} - {category_translation} {recipes[0].category.name}'
 
         context['title'] = title
 

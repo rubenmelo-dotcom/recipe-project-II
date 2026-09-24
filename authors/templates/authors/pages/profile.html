@@ -1,0 +1,18 @@
+{% extends 'global/base.html' %}
+
+
+{% block content %}
+  <div class="main-content center container"></div>
+  <div class="main-content center container mx-auto w-full max-w-2xl px-4 pt-10 pb-6 text-center sm:px-6 sm:pt-14">
+    <h2 class="text-3xl font-bold text-fg sm:text-4xl">Profile</h2>
+    <p class="mt-2 text-fg-muted">Edite seu perfil de autor.</p>
+  </div>
+  {% if messages %}
+      {% include "global/partials/_messages.html" %}
+  {% endif %}
+  <div class="main-content center container mx-auto w-full max-w-2xl px-4 pt-10 pb-6 text-center sm:px-6 sm:pt-14" >
+    <h3>Username: {{ profile.author.username }}</h3>
+    <p>Bio: {{ profile.bio }}</p>
+  </div>
+ 
+{% endblock content %}
