@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
 from django.utils.translation import gettext_lazy as _
+from utils.recipes.resize_image import resize_image
 
 
 class TimeUnit(models.TextChoices):
@@ -85,7 +86,14 @@ class Recipe(models.Model):
             slug = f'{slugify(self.title)}'
             self.slug = slug
 
-        return super().save(*args, **kwargs)
+        saved = super().save(*args, **kwargs)
+
+        if self.cover:
+            try:
+                resize_image(self.cover, 800)
+            except FileNotFoundError:
+                ...
+        return saved
 
     def clean(self):
         error_messages = defaultdict(list)

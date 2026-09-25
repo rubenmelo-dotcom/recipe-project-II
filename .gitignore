@@ -142,3 +142,5 @@ GitHub.sublime-settings
 # Tailwind CSS standalone CLI (baixado localmente, não versionar)
 bin/tailwindcss
 node_modules/
+
+bin/tailwindcss
